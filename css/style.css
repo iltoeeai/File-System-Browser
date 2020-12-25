@@ -2,13 +2,13 @@
     font-family: Arial, Helvetica, sans-serif;
     box-sizing: border-box;
 }
-table {
+table{
     border-collapse: collapse;
     width: 90%;
     margin: auto;
 }
-table td, table th {
-    border: 2px solid rgb(221, 211, 211);
+table td, table th{
+    border: 1px solid rgb(221, 211, 211);
     padding: 10px;
 }
 .last_td{
@@ -17,13 +17,13 @@ table td, table th {
 tr:hover{
     background-color: rgb(192, 182, 182);
 }
-table th {
-    text-align: left;
-    padding-top: 10px;
-    background-color: #fffcd2f6;
+table th{
     color: rgb(65, 61, 61);
+    padding-top: 10px;
     padding-bottom: 10px;
+    text-align: left;
+    background-color: #fffcd2f6;
 }
 input{
-    cursor: pointer;
+    cursor: pointer; 
 }
