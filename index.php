@@ -1,6 +1,7 @@
 <?php
-require('footer.php'); // include would still read the code even if there was a mistake
+require('login_logout.php');
 require('header.php'); // adds required file. The same like include just require stops reading the code if there is a mistake
+require('footer.php'); // include would still read the code even if there was a mistake
 
 if (isset($_POST['delete'])) {
     $file_del = './' . $_GET["path"] . $_POST['delete'];
@@ -33,9 +34,20 @@ $path = './' . $_GET["path"];                   // $_GET an associative array of
 $fsndirs = scandir($path);                      // returns an array of files and directories from the directory.
 
 // print $cwd;          in this case it prints: C:\Ampps\www\Homework\SPRINT
-// print_r($fsndirs);      prints an array: Array ( [0] => . [1] => .. [2] => .git [3] => css [4] => folder_test [5] => footer.php [6] => header.php [7] => test.php [8] => test1.txt )
+// print_r($fsndirs);      prints an array: Array ( [0] => . [1] => .. [2] => .git [3] => css [4] => folder_test [5] => footer.php [6] => header.php [7] => index.php [8] => test1.txt )
 
-print('<h3>Directory contents: ' . $_SERVER['REQUEST_URI'] . '</h3>');          /// $_SERVER['REQUEST_URI'] prints Homework/SPRINT/test.php
+if(!$_SESSION['valid'] == true){
+    print('<div class="container form-signin"><div class="container">');
+    print('<form class="form-signin" role="form" action=' . htmlspecialchars($_SERVER['PHP_SELF']) . '  method="post">');
+    print('<h4 class="form-signin-heading">'. $msg .'</h4>');
+    print('<input type="text" class="form-control" name="username" placeholder="username = tadas" required autofocus></br>');
+    print('<input type="password" class="form-control" name="password" placeholder="password = 1234" required>');
+    print('<button class="btn btn-lg btn-primary btn-block" type="submit" name="login">Login</button></form>');
+    print('</div>');
+    die();
+}
+
+print('<h3>Directory contents: ' . $_SERVER['REQUEST_URI'] . '</h3>');          /// $_SERVER['REQUEST_URI'] prints Homework/SPRINT/index.php
 
 print('<br/>');
 print('<table><thead><th>Name</th><th>Type</th><th>Last Modified On</th><th>Actions</th></thead>');
@@ -44,7 +56,7 @@ foreach ($fsndirs as $fanddir) {
     if ($fanddir != "." && $fanddir != "..") {
         print('<tr><td>' . (is_dir($path . $fanddir)
             ? '<a href="' . (isset($_GET['path'])                                       // isset - determines if a variable is declared and is different than NULL, returns bool
-                ? $_SERVER['REQUEST_URI'] . '/' . $fanddir . '/'                        //The URI which was given in order to access this page 'test.php'
+                ? $_SERVER['REQUEST_URI'] . '/' . $fanddir . '/'                        //The URI which was given in order to access this page 'index.php'
                 : $_SERVER['REQUEST_URI'] . '?path=' . $fanddir . '/') . '">' . $fanddir . '</a>'
             : $fanddir) . '</td>');
         print('<td>' . (is_dir($path . $fanddir) ? "Directory" : "File") . '</td>');
@@ -65,3 +77,6 @@ foreach ($fsndirs as $fanddir) {
     }
 }
 print("</table>");
+print('Click here to <a href = "index.php?action=logout"> logout.');
+
+
