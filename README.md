@@ -11,10 +11,26 @@ Server file browser built with PHP.
  - :white_check_mark: User can login and logout
 ---
 
-### Installation
+## Installation
 
 
-In order to run the project you need to have AMPPS installed.
+In order to run the project you need to have AMPPS installed. When you have it just add the project folder to your AMPPS projects directory ("../Ampps/www/"). Then open the directory via localhost.<br>
+
+### Cloning a repository
+
+- On GitHub, navigate to the main page of the repository.
+- Above the list of files, click  Code.
+<img src="img/git.png">
+- To clone the repository using HTTPS, under "Clone with HTTPS", click this: <br>
+<img src="img/git1.png">
+- Open Git Bash.
+- Change the current working directory to the location where you want the cloned directory.
+- Type ``` git clone ```, and then paste the URL you copied earlier.
+
+```bash
+# $ git clone https://github.com/iltoeeai/File-System-Browser.git
+```
+- Press Enter to create your local clone.
 ___
 
 ## Login details
