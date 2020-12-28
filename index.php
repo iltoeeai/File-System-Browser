@@ -1,7 +1,7 @@
 <?php
-require('login_logout.php');
 require('header.php'); // adds required file. The same like include just require stops reading the code if there is a mistake
 require('footer.php'); // include would still read the code even if there was a mistake
+require('login_logout.php');
 
 
 #DELETE
@@ -13,6 +13,7 @@ if (isset($_POST['delete'])) {
         unlink($file_del1);
     }
 }
+
 
 #DOWNLOAD
 if (isset($_POST['download'])) {
@@ -31,6 +32,7 @@ if (isset($_POST['download'])) {
     exit;
 }
 
+
 date_default_timezone_set("Europe/Vilnius");    // sets timezone
 $cwd = getcwd();                                // gets the current working directory
 $path = './' . $_GET["path"];                   // $_GET an associative array of variables passed to the current script via the URL query string( part that goes after ?path= )
@@ -39,22 +41,40 @@ $fsndirs = scandir($path);                      // returns an array of files and
 // print $cwd;          in this case it prints: C:\Ampps\www\Homework\SPRINT
 // print_r($fsndirs);      prints an array: Array ( [0] => . [1] => .. [2] => .git [3] => css [4] => folder_test [5] => footer.php [6] => header.php [7] => index.php [8] => test1.txt )
 
-print('<div class="container">');
 
 #LOGIN FORM
 if (!$_SESSION['valid'] == true) {
-    print('<div class="container form-signin"><div class="container">');
+    print('<div class="container mt-3 form-signin"><div class="container">');
     print('<form class="form-signin" role="form" action=' . htmlspecialchars($_SERVER['PHP_SELF']) . '  method="post">');           //$_SERVER['PHP_SELF'] returns the filename of the currently executing script
     print('<h4 class="form-signin-heading">' . $msg . '</h4>');         // $msg = '';
     print('<input type="text" class="form-control" name="username" placeholder="username = tadas" required autofocus></br>');
     print('<input type="password" class="form-control" name="password" placeholder="password = 1234" required>');
-    print('<button class="btn btn-lg btn-primary btn-block" type="submit" name="login">Login</button></form>');
+    print('<button class="btn btn-lg btn-primary mt-2 btn-block" type="submit" name="login">Login</button></form>');
     print('</div>');
     die();
 }
 
+
+print('<div class="container mt-3">');
 print('<h3>Directory contents: ' . $_SERVER['REQUEST_URI'] . '</h3>');          // $_SERVER['REQUEST_URI'] prints Homework/SPRINT/index.php
 print('<br/>');
+
+
+# DIRECTORY CREATION
+if(isset($_POST["folder_create"])){
+    if($_POST["folder_create"] != ""){
+        $created_dir = './' . $_GET["path"] . $_POST["folder_create"];
+        if (!is_dir($created_dir)) mkdir($created_dir, 0777, true);
+    }
+    header('Location: ' .  $_SERVER['REQUEST_URI']);
+}
+
+print('<form action="" method="post">
+<input type="hidden" name="path" value='.($_GET['path']) .' /> 
+<input placeholder="Name of Folder" type="text" id="folder_create" name="folder_create">
+<button type="submit">Submit</button>
+</form>');
+
 
 #BACK BUTTON
 $que = explode('/', rtrim($_SERVER['QUERY_STRING'], '/'));                     // explode() function breaks a string into an array
@@ -67,16 +87,17 @@ if (count($que) != 0) {
     print('<a role="button" class="btn btn-secondary" href= "?path=/" >Back</a>');
 }
 
+
 #TABLE
 print('<table><thead><th>Name</th><th>Type</th><th>Last Modified On</th><th>Actions</th></thead>');
 
 foreach ($fsndirs as $fanddir) {
     if ($fanddir != "." && $fanddir != "..") {
         print('<tr><td>' . (is_dir($path . $fanddir)
-            ? '<a href="' . (isset($_GET['path'])                                       // isset - determines if a variable is declared and is different than NULL, returns bool
+            ? '<img src=css/folder.png>' .'<a href="' . (isset($_GET['path'])                                        // isset - determines if a variable is declared and is different than NULL, returns bool
                 ? $_SERVER['REQUEST_URI'] . '/' . $fanddir . '/'                        //The URI which was given in order to access this page 'index.php'
                 : $_SERVER['REQUEST_URI'] . '?path=' . $fanddir . '/') . '">' . $fanddir . '</a>'
-            : $fanddir) . '</td>');
+            : '<img src=css/file.png>' . $fanddir) . '</td>');
         print('<td>' . (is_dir($path . $fanddir) ? "Directory" : "File") . '</td>');
         print('<td>' . @date('F d, Y, H:i:s', filemtime($path . $fanddir)) . '</td>');
         print('<td class="last_td">' .
@@ -97,6 +118,7 @@ foreach ($fsndirs as $fanddir) {
 print("</table>");
 print('<br>');
 
+
 #UPLOAD
 if (isset($_FILES['uploadFile'])) {
     $file_name = $_FILES['uploadFile']['name'];
@@ -116,7 +138,7 @@ if (isset($_FILES['uploadFile'])) {
         print('Sorry, your file is too large');
     }
     move_uploaded_file($file_temp, './' . $_GET["path"] . $file_name);
-    header("Refresh:1");
+    header('Location: ' .  $_SERVER['REQUEST_URI']);
 }
 
 print('<form action="" action="" method="post" enctype="multipart/form-data">
@@ -124,6 +146,7 @@ print('<form action="" action="" method="post" enctype="multipart/form-data">
 
 <input type="submit" action="" name="submit" value="Upload">
 </form>');
+
 
 #LOGOUT
 print('Click here to <a href = "index.php?action=logout"> logout.');
