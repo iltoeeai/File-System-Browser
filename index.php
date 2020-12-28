@@ -94,10 +94,10 @@ print('<table><thead><th>Name</th><th>Type</th><th>Last Modified On</th><th>Acti
 foreach ($fsndirs as $fanddir) {
     if ($fanddir != "." && $fanddir != "..") {
         print('<tr><td>' . (is_dir($path . $fanddir)
-            ? '<img src=css/folder.png>' .'<a href="' . (isset($_GET['path'])                                        // isset - determines if a variable is declared and is different than NULL, returns bool
+            ? '<img src=img/folder.png>' .'<a href="' . (isset($_GET['path'])                                        // isset - determines if a variable is declared and is different than NULL, returns bool
                 ? $_SERVER['REQUEST_URI'] . '/' . $fanddir . '/'                        //The URI which was given in order to access this page 'index.php'
                 : $_SERVER['REQUEST_URI'] . '?path=' . $fanddir . '/') . '">' . $fanddir . '</a>'
-            : '<img src=css/file.png>' . $fanddir) . '</td>');
+            : '<img src=img/file.png>' . $fanddir) . '</td>');
         print('<td>' . (is_dir($path . $fanddir) ? "Directory" : "File") . '</td>');
         print('<td>' . @date('F d, Y, H:i:s', filemtime($path . $fanddir)) . '</td>');
         print('<td class="last_td">' .
