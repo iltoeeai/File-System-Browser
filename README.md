@@ -3,13 +3,13 @@
 
 Server file browser built with PHP.
 
-  :eyes: User can see the list of folders and files inside a directory <br>
-  :file_folder: User can create new folders or delete files <br>
-  :back: User can move from folder to folder <br>
-  :clock1230: User can see when the file/folder was modified <br>
-  :heavy_plus_sign: User can upload and download new files <br>
-  :white_check_mark: User can login and logout <br>
----
+ - :eyes: User can see the list of folders and files inside a directory <br>
+ - :file_folder: User can create new folders or delete files <br>
+ - :back: User can move from folder to folder <br>
+ - :clock1230: User can see when the file/folder was modified <br>
+ - :heavy_plus_sign: User can upload and download new files <br>
+ - :white_check_mark: User can login and logout <br>
+___
 
 ## Installation
 
