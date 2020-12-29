@@ -14,7 +14,7 @@ ___
 ## Installation
 
 
-In order to run the project you need to have AMPPS installed. When you have it just add the project folder to your AMPPS projects directory ("../Ampps/www/"). Then open the directory via localhost.<br>
+In order to run the project you need to have AMPPS installed. When you have it just navigate to the main page of the repository and download the project (.zip file). Then add the project folder to your AMPPS projects directory ("../Ampps/www/"). Open the directory via localhost.<br>
 
 ### Cloning a repository
 
@@ -30,7 +30,7 @@ In order to run the project you need to have AMPPS installed. When you have it j
 - Type ``` git clone ```, and then paste the URL you copied earlier.
 
 ```bash
-# $ git clone https://github.com/iltoeeai/File-System-Browser.git
+ $ git clone https://github.com/iltoeeai/File-System-Browser.git
 ```
 - Press Enter to create your local clone.
 ___
@@ -49,4 +49,3 @@ ___
     <img src="img/dir.png"/>
     <img src="img/up.png"/>
 </div>
-___

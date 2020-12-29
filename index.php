@@ -4,6 +4,7 @@ require('footer.php'); // include would still read the code even if there was a 
 require('login_logout.php');
 
 
+
 #DELETE
 if (isset($_POST['delete'])) {
     $file_del = './' . $_GET["path"] . $_POST['delete'];
@@ -17,6 +18,8 @@ if (isset($_POST['delete'])) {
 
 #DOWNLOAD
 if (isset($_POST['download'])) {
+    // ob_clean();
+    // ob_start();
     $file = './' . $_GET["path"] . $_POST['download'];                              // get File path
     $file_path = str_replace("&nbsp;", " ", htmlspecialchars($file, null, 'utf-8'));
     // process download
@@ -27,9 +30,32 @@ if (isset($_POST['download'])) {
     header('Cache-Control: must-revalidate');
     header('Pragma: public');
     header('Content-Length: ' . filesize($file_path));
-    flush();                                                                        // function requests the server to send its currently buffered output to the browser
+    // flush();                                                                       // function requests the server to send its currently buffered output to the browser
     readfile($file_path);
     exit;
+}
+
+#UPLOAD
+if (isset($_FILES['uploadFile'])) {
+    $file_name = $_FILES['uploadFile']['name'];
+    $file_type = $_FILES['uploadFile']['type'];
+    $file_tmp = $_FILES['uploadFile']['tmp_name'];
+    $file_size = $_FILES['uploadFile']['size'];
+    $file_parts = explode('.', $_FILES['uploadFile']['name']);
+    $file_exten = strtolower(end($file_parts));
+
+    $extArray = array("jpg", "jpeg", "pdf", "png");
+
+    if (in_array($file_exten, $extArray) === false) {
+        print("Please choose a JPG, JPEG, PDF or PNG file.");
+    }
+
+    if ($file_size > 5000000) {
+        print('Sorry, your file is too large');
+    }
+    move_uploaded_file($file_tmp, './' . $_GET["path"] . $file_name);
+    header('Location:'.$_SERVER['REQUEST_URI']);
+    
 }
 
 
@@ -118,28 +144,6 @@ foreach ($fsndirs as $fanddir) {
 print("</table>");
 print('<br>');
 
-
-#UPLOAD
-if (isset($_FILES['uploadFile'])) {
-    $file_name = $_FILES['uploadFile']['name'];
-    $file_type = $_FILES['uploadFile']['type'];
-    $file_temp = $_FILES['uploadFile']['tmp_name'];
-    $file_size = $_FILES['uploadFile']['size'];
-    $file_parts = explode('.', $_FILES['uploadFile']['name']);
-    $file_exten = strtolower(end($file_parts));
-
-    $extArray = array("jpg", "jpeg", "pdf", "png");
-
-    if (in_array($file_exten, $extArray) === false) {
-        print("Please choose a JPG, JPEG, PDF or PNG file.");
-    }
-
-    if ($file_size > 500000) {
-        print('Sorry, your file is too large');
-    }
-    move_uploaded_file($file_temp, './' . $_GET["path"] . $file_name);
-    header('Location: ' .  $_SERVER['REQUEST_URI']);
-}
 
 print('<form action="" action="" method="post" enctype="multipart/form-data">
 <input type="file" name="uploadFile" id="file">

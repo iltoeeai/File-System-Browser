@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 
 
@@ -31,4 +30,3 @@ if (isset($_GET['action']) and $_GET['action'] == 'logout') {
     unset($_SESSION['valid']);
 }
 
-?>
