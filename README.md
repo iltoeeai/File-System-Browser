@@ -18,6 +18,7 @@ In order to run the project you need to have AMPPS installed. When you have it j
 
 ### Cloning a repository
 
+You can also run this project by cloning the repository:
 - On GitHub, navigate to the main page of the repository.
 - Above the list of files, click  Code.
 <img src="img/git.png">
