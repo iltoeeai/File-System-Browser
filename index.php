@@ -72,7 +72,7 @@ $fsndirs = scandir($path);                      // returns an array of files and
 #LOGIN FORM
 if (!$_SESSION['valid'] == true) {
     print('<div class="container mt-3 form-signin"><div class="container">');
-    print('<form class="form-signin" role="form" action=' . htmlspecialchars($_SERVER['PHP_SELF']) . '  method="post">');           //$_SERVER['PHP_SELF'] returns the filename of the currently executing script
+    print('<form class="form-signin" role="form" action="./index.php"  method="post">');           //$_SERVER['PHP_SELF'] returns the filename of the currently executing script
     print('<h4 class="form-signin-heading">' . $msg . '</h4>');         // $msg = '';
     print('<input type="text" class="form-control" name="username" placeholder="username = tadas" required autofocus></br>');
     print('<input type="password" class="form-control" name="password" placeholder="password = 1234" required>');
