@@ -9,7 +9,7 @@ require('login_logout.php');
 if (isset($_POST['delete'])) {
     $file_del = './' . $_GET["path"] . $_POST['delete'];
     // print_r($file_del);
-    $file_del1 = str_replace("&nbsp;", " ", htmlspecialchars($file_del, null, 'utf-8'));
+    $file_del1 = str_replace("&nbsp;", " ", htmlentities($file_del, null, 'utf-8'));
     if ($file_del1 != "." && $file_del1 != ".." && is_file($file_del1)) {
         unlink($file_del1);
     }
@@ -18,19 +18,21 @@ if (isset($_POST['delete'])) {
 
 #DOWNLOAD
 if (isset($_POST['download'])) {
-    // ob_clean();
-    // ob_start();
     $file = './' . $_GET["path"] . $_POST['download'];                              // get File path
-    $file_path = str_replace("&nbsp;", " ", htmlspecialchars($file, null, 'utf-8'));
+    $file_path = str_replace("&nbsp;", " ", htmlentities($file, null, 'utf-8'));
     // process download
+
+    ob_clean();
+    ob_start();
     header('Content-Description: File Transfer');
-    header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename="' . basename($file_path) . '"');
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: attachment; filename=' . basename($file_path));
+    header('Content-Transfer-Encoding: binary');
     header('Expires: 0');
-    header('Cache-Control: must-revalidate');
+    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
     header('Pragma: public');
     header('Content-Length: ' . filesize($file_path));
-    // flush();                                                                       // function requests the server to send its currently buffered output to the browser
+    ob_end_flush();                                                                      // function requests the server to send its currently buffered output to the browser
     readfile($file_path);
     exit;
 }
@@ -54,8 +56,7 @@ if (isset($_FILES['uploadFile'])) {
         print('Sorry, your file is too large');
     }
     move_uploaded_file($file_tmp, './' . $_GET["path"] . $file_name);
-    header('Location:'.$_SERVER['REQUEST_URI']);
-    
+    header('Location:' . $_SERVER['REQUEST_URI']);
 }
 
 
@@ -87,16 +88,17 @@ print('<br/>');
 
 
 # DIRECTORY CREATION
-if(isset($_POST["folder_create"])){
-    if($_POST["folder_create"] != ""){
+if (isset($_POST["folder_create"])) {
+    if ($_POST["folder_create"] != "") {
         $created_dir = './' . $_GET["path"] . $_POST["folder_create"];
         if (!is_dir($created_dir)) mkdir($created_dir, 0777, true);
     }
-    header('Location: ' .  $_SERVER['REQUEST_URI']);
+    $url = preg_replace("/(&?|\??)create_dir=(.+)?/", "", $_SERVER["REQUEST_URI"]);
+    header('Location: ' . urldecode($url));
 }
 
 print('<form action="" method="post">
-<input type="hidden" name="path" value='.($_GET['path']) .' /> 
+<input type="hidden" name="path" value=' . ($_GET['path']) . ' /> 
 <input placeholder="Name of Folder" type="text" id="folder_create" name="folder_create">
 <button type="submit">Submit</button>
 </form>');
@@ -120,7 +122,7 @@ print('<table><thead><th>Name</th><th>Type</th><th>Last Modified On</th><th>Acti
 foreach ($fsndirs as $fanddir) {
     if ($fanddir != "." && $fanddir != "..") {
         print('<tr><td>' . (is_dir($path . $fanddir)
-            ? '<img src=img/folder.png>' .'<a href="' . (isset($_GET['path'])                                        // isset - determines if a variable is declared and is different than NULL, returns bool
+            ? '<img src=img/folder.png>' . '<a href="' . (isset($_GET['path'])                                        // isset - determines if a variable is declared and is different than NULL, returns bool
                 ? $_SERVER['REQUEST_URI'] . '/' . $fanddir . '/'                        //The URI which was given in order to access this page 'index.php'
                 : $_SERVER['REQUEST_URI'] . '?path=' . $fanddir . '/') . '">' . $fanddir . '</a>'
             : '<img src=img/file.png>' . $fanddir) . '</td>');
