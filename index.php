@@ -1,6 +1,5 @@
 <?php
-require('header.php'); // adds required file. The same like include just require stops reading the code if there is a mistake
-require('footer.php'); // include would still read the code even if there was a mistake
+include('header.php'); // adds required file. The same like include just require stops reading the code if there is a mistake
 require('login_logout.php');
 
 
@@ -157,3 +156,6 @@ print('<form action="" action="" method="post" enctype="multipart/form-data">
 #LOGOUT
 print('Click here to <a href = "index.php?action=logout"> logout.');
 print('</div>');
+include('footer.php'); // include would still read the code even if there was a mistake
+?>
+
